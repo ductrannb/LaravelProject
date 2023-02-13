@@ -17,9 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test-connect', function () {
-    $users = DB::table('users')->get();
-    foreach($users as $user) {
-        echo($user->email . "<br/>");
-    }
-});
+// Route::get('/test-connect', function () {
+//     $users = DB::table('users')->get();
+//     foreach($users as $user) {
+//         echo($user->email . "<br/>");
+//     }
+// });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
