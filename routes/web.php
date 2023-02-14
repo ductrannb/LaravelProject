@@ -31,3 +31,7 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/pay', [PaymentController::class, 'index'])->name('pay');
+
+Route::get('/html_dom', function () {
+    print file_get_html('http://www.google.com/')->plaintext;
+})->name('html_dom');
