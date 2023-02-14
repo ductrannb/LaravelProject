@@ -28,7 +28,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "simplehtmldom_1_9_1/simple_html_dom.php"
+            "app/Services/simple_html_dom.php"
         ]
     },
     "autoload-dev": {
