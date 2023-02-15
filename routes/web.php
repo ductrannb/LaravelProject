@@ -39,3 +39,7 @@ Route::get('/html_dom', function () {
 Route::get('/checkout', function () {
     return view('checkout');
 })->name('checkout');
+
+Route::post('/res_checkout', function () {
+    echo "Success";
+});

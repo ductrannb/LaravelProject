@@ -17,6 +17,9 @@
     <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js'
         integrity='sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF' crossorigin='anonymous'>
     </script>
+    <script src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js'></script>
+    <script src='http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js' type='text/javascript'>
+    </script>
     <style>
     .form-control {
         /* margin-top: 10px; */
@@ -26,15 +29,6 @@
     .container {
         margin-top: 50px;
         margin-bottom: 50px;
-    }
-
-    .row {
-        display: flex;
-        flex-wrap: nowrap;
-    }
-
-    .item-inline {
-        max-width: 50%;
     }
 
     .oder-table {
@@ -73,16 +67,17 @@
 
 <body>
     <div class='container'>
-        <form class='form' method='POST' action='a'>
+        <form id='form' name='form'>
+            @csrf
             <div class='row'>
                 <div class='col-lg-7'>
                     <h3 class='text-upcase'>Billing Details</h3>
                     <div class='row'>
-                        <div class='item-inline'>
+                        <div class='col-lg-6'>
                             <label for='firstNameInput' class='form-label'>First Name *</label>
                             <input type='text' class='form-control' id='firstNameInput' name='firstName'>
                         </div>
-                        <div class='item-inline'>
+                        <div class='col-lg-6'>
                             <label for='lastNameInput' class='form-label'>Last Name *</label>
                             <input type='text' class='form-control' id='lastNameInput' name='lastName'>
                         </div>
@@ -106,22 +101,22 @@
                         placeholder='Apartment, suite, unit, etc. (optional)'>
 
                     <div class='row'>
-                        <div class='item-inline'>
+                        <div class='col-lg-6'>
                             <label for='townInput' class='form-label'>Town / City *</label>
                             <input type='text' class='form-control' id='townInput' name='town'>
                         </div>
-                        <div class='item-inline'>
+                        <div class='col-lg-6'>
                             <label for='stateInput' class='form-label'>State *</label>
                             <input type='text' class='form-control' id='stateInput' name='state'>
                         </div>
                     </div>
 
                     <div class='row'>
-                        <div class='item-inline'>
+                        <div class='col-lg-6'>
                             <label for='zipInput' class='form-label'>Zip *</label>
                             <input type='text' class='form-control' id='zipInput' name='zip'>
                         </div>
-                        <div class='item-inline'>
+                        <div class='col-lg-6'>
                             <label for='phoneInput' class='form-label'>Phone *</label>
                             <input type='text' class='form-control' id='phoneInput' name='phone'>
                         </div>
@@ -231,8 +226,8 @@
                         </div>
 
                         <div class='item-border title'>
-                            <input type='checkbox' class='form-check-input' id='shipToAddCheckbox'>
-                            <label class='form-check-label' for='shipToAddCheckbox'>I have read and agree to the
+                            <input type='checkbox' class='form-check-input' id='lastConfirmChBox'>
+                            <label class='form-check-label' for='lastConfirmChBox'>I have read and agree to the
                                 website
                                 terms and conditions</label>
                         </div>
@@ -242,6 +237,37 @@
             </div>
         </form>
     </div>
+
+    <script>
+        $().ready(function() {
+            $('#form').validate({
+                submitHandler: function(form) {
+                    submitForm()
+                }
+            });
+        })
+        function submitForm() {
+            // var token =  $('input[name="_token"]').attr('value')
+            // $.ajaxSetup({
+            //     beforeSend: function(xhr) {
+            //         xhr.setRequestHeader('Csrf-Token', token);
+            //     }
+            // });
+            var queryString = $('#form').serialize();
+            $.ajax({
+                url: 'res_checkout',
+                data : queryString,
+                method: 'POST',
+                success: function(res) {
+                    alert(res)
+                },
+                error: function (res) {
+                    alert(queryString)
+                }
+            })
+        }
+    </script>
+
 </body>
 
 </html>
