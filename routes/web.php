@@ -35,3 +35,7 @@ Route::get('/pay', [PaymentController::class, 'index'])->name('pay');
 Route::get('/html_dom', function () {
     print file_get_html('http://www.google.com/')->plaintext;
 })->name('html_dom');
+
+Route::get('/checkout', function () {
+    return view('checkout');
+})->name('checkout');
