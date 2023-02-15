@@ -262,7 +262,7 @@
                     alert(res)
                 },
                 error: function (res) {
-                    alert(queryString)
+                    alert(res)
                 }
             })
         }
