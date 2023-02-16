@@ -62,11 +62,21 @@
     .item-border {
         border-top: 1px solid #eee;
     }
-    </style>
+    .alert {
+        position: fixed;
+        display: none;
+    }
+    .alert-primary {
+        background-color: green;
+        color: white;
+    }
+</style>
 </head>
 
 <body>
     <div class='container'>
+        <div class="alert" id='alert' role="alert">
+        </div>
         <form id='form' name='form'>
             @csrf
             <div class='row'>
@@ -239,7 +249,7 @@
     </div>
 
     <script>
-        $().ready(function() {
+        $().ready(function () {
             $('#form').validate({
                 rules: {
                     "first_name" : {
@@ -257,7 +267,7 @@
                     "town" : {
                         required: true
                     },
-                    "stage" : {
+                    "state" : {
                         required: true
                     },
                     "zip" : {
@@ -284,12 +294,26 @@
                 dataType: 'json',
                 method: 'POST',
                 success: function(res) {
-                    alert(res.message)
+                    showMessage(res.success,res.message)
                 },
                 error: function (res) {
-                    alert(res.message)
+                    showMessage(res.success,res.message)
                 }
             })
+        }
+        function showMessage(success, message) {
+            var alert = document.getElementById('alert')
+            if (success) {
+                alert.classList.add('alert-primary')
+            }
+            else {
+                alert.classList.add('alert-danger')
+            }
+            alert.innerHTML = message
+            alert.style.display = "block"
+            setTimeout(function () {
+                $('#alert').fadeOut('fast');
+            }, 2000);
         }
     </script>
 
