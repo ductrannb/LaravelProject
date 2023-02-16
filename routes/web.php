@@ -40,6 +40,4 @@ Route::get('/checkout', function () {
     return view('checkout');
 })->name('checkout');
 
-Route::post('/res_checkout', function () {
-    echo "Success";
-});
+Route::post('/checkout', [PaymentController::class, 'create']);

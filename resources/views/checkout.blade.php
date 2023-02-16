@@ -75,16 +75,16 @@
                     <div class='row'>
                         <div class='col-lg-6'>
                             <label for='firstNameInput' class='form-label'>First Name *</label>
-                            <input type='text' class='form-control' id='firstNameInput' name='firstName'>
+                            <input type='text' class='form-control' id='firstNameInput' name='first_name'>
                         </div>
                         <div class='col-lg-6'>
                             <label for='lastNameInput' class='form-label'>Last Name *</label>
-                            <input type='text' class='form-control' id='lastNameInput' name='lastName'>
+                            <input type='text' class='form-control' id='lastNameInput' name='last_name'>
                         </div>
                     </div>
 
                     <label for='companyInput' class='form-label'>Company Name (Optional)</label>
-                    <input type='text' class='form-control' id='companyInput' name='companyName'>
+                    <input type='text' class='form-control' id='companyInput' name='company_name'>
 
                     <label for='countrySelect' class='form-label'>Country / Region *</label>
                     <select class='form-select form-control' aria-label='Default select example' id='countrySelect' name='country'>
@@ -126,12 +126,12 @@
                     <input type='text' class='form-control' id='emaillInput' name='email'>
 
                     <div>
-                        <input type='checkbox' class='form-check-input' id='createAccountCheckbox' name='chBoxCreateAccount'>
+                        <input type='checkbox' class='form-check-input' id='createAccountCheckbox' name='create_account'>
                         <label class='form-check-label' for='createAccountCheckbox'>Create an account?</label>
                     </div>
 
                     <div>
-                        <input type='checkbox' class='form-check-input' id='shipToAddCheckbox' name='chBoxShipToAddress'>
+                        <input type='checkbox' class='form-check-input' id='shipToAddCheckbox' name='ship_to_address'>
                         <label class='form-check-label' for='shipToAddCheckbox'>Ship to a different address?</label>
                     </div>
 
@@ -139,7 +139,7 @@
                     <label for='zipInput' class='form-label'>Order Notes (Optional)</label>
                     <textarea class='form-control pb-2 pt-2 mb-0' cols='30' rows='5'
                         placeholder='Notes about your order, e.g. special notes for delivery'
-                        style='width: 700px; height: 125px;' name='oderNote'></textarea>
+                        style='width: 700px; height: 125px;' name='order_note'></textarea>
                 </div>
                 
                 <div class='col-lg-5'>
@@ -177,20 +177,20 @@
                                     <td>
                                         <h4 class='title'>Calculate Shipping</h4>
                                         <div class='form-check'>
-                                            <input class='form-check-input' type='radio' name='shipping'
-                                                id='flatRateBtn' value='Flat rate'>
+                                            <input class='form-check-input' type='radio' name='cal_shipping'
+                                                id='flatRateBtn' value='0'>
                                             <label class='form-check-label' for='flatRateBtn'>Flat rate</label>
                                         </div>
                                         <div class='form-check'>
-                                            <input class='form-check-input' type='radio' name='shipping'
-                                                id='freeShipBtn' checked value='Free shipping'>
+                                            <input class='form-check-input' type='radio' name='cal_shipping'
+                                                id='freeShipBtn' checked value='1'>
                                             <label class='form-check-label' for='freeShipBtn'>
                                                 Free shipping
                                             </label>
                                         </div>
                                         <div class='form-check'>
-                                            <input class='form-check-input' type='radio' name='shipping'
-                                                id='localPickupBtn' checked value='Local pickup'>
+                                            <input class='form-check-input' type='radio' name='cal_shipping'
+                                                id='localPickupBtn' checked value='2'>
                                             <label class='form-check-label' for='localPickupBtn'>
                                                 Local pickup
                                             </label>
@@ -208,7 +208,7 @@
                         <div class='item-border'>
                             <h4 class='title'>Payment Methods</h4>
                             <div class='form-check'>
-                                <input class='form-check-input' type='radio' name='paymentMethod' id='checkPayment' value='Check payments'>
+                                <input class='form-check-input' type='radio' name='payment_method' id='checkPayment' value='0'>
                                 <label class='form-check-label' for='checkPayment'>Check payments</label>
                             </div>
                             <div class='form-check'>
@@ -217,8 +217,8 @@
                                 </label>
                             </div>
                             <div class='form-check'>
-                                <input class='form-check-input' type='radio' name='paymentMethod' id='cashOnDel'
-                                    checked value='Cash on delivery'>
+                                <input class='form-check-input' type='radio' name='payment_method' id='cashOnDel'
+                                    checked value='1'>
                                 <label class='form-check-label' for='cashOnDel'>
                                     Cash on delivery
                                 </label>
@@ -226,7 +226,7 @@
                         </div>
 
                         <div class='item-border title'>
-                            <input type='checkbox' class='form-check-input' id='lastConfirmChBox'>
+                            <input type='checkbox' class='form-check-input' id='lastConfirmChBox' name='last_confirm'>
                             <label class='form-check-label' for='lastConfirmChBox'>I have read and agree to the
                                 website
                                 terms and conditions</label>
@@ -241,28 +241,53 @@
     <script>
         $().ready(function() {
             $('#form').validate({
+                rules: {
+                    "first_name" : {
+                        required: true
+                    },
+                    "last_name" : {
+                        required: true
+                    },
+                    "country" : {
+                        required: true
+                    },
+                    "address" : {
+                        required: true
+                    },
+                    "town" : {
+                        required: true
+                    },
+                    "stage" : {
+                        required: true
+                    },
+                    "zip" : {
+                        required: true
+                    },
+                    "phone" : {
+                        required: true
+                    },
+                    "email" : {
+                        required: true
+                    },
+                    
+                },
                 submitHandler: function(form) {
                     submitForm()
                 }
             });
         })
         function submitForm() {
-            // var token =  $('input[name="_token"]').attr('value')
-            // $.ajaxSetup({
-            //     beforeSend: function(xhr) {
-            //         xhr.setRequestHeader('Csrf-Token', token);
-            //     }
-            // });
             var queryString = $('#form').serialize();
             $.ajax({
-                url: 'res_checkout',
+                url: 'checkout',
                 data : queryString,
+                dataType: 'json',
                 method: 'POST',
                 success: function(res) {
-                    alert(res)
+                    alert(res.message)
                 },
                 error: function (res) {
-                    alert(res)
+                    alert(res.message)
                 }
             })
         }
