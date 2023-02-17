@@ -41,7 +41,6 @@
 
     .title {
         padding: 20px 0;
-        /* border-bottom: 1px solid #eee; */
     }
 
     .form-check {
@@ -278,8 +277,7 @@
                     },
                     "email" : {
                         required: true
-                    },
-                    
+                    }
                 },
                 submitHandler: function(form) {
                     submitForm()
