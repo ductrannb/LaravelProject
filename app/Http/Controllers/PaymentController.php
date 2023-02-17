@@ -46,30 +46,30 @@ class PaymentController extends Controller
         print_r($resultRefund);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         try {
             $x = Order::create([
-                'first_name' => $_POST['first_name'],
-                'last_name' => $_POST['last_name'],
-                'company_name' => $_POST['company_name'],
-                'country' => $_POST['company_name'],
-                'address' => $_POST['address'],
-                'address2' => $_POST['address2'],
-                'town' => $_POST['town'],
-                'state' => $_POST['state'],
-                'zip' => $_POST['zip'],
-                'phone' => $_POST['phone'],
-                'email' => $_POST['email'],
-                'create_account' => isset($_POST['create_account']) ? '1' : '0',
-                'ship_to_address' => isset($_POST['ship_to_address']) ? '1' : '0',
-                'order_note' => $_POST['order_note'],
-                'cal_shipping' => $_POST['cal_shipping'],
-                'payment_method' => $_POST['payment_method'],
-                'last_confirm' => isset($_POST['last_confirm']) ? '1' : '0'
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'company_name' => $request->company_name,
+                'country' => $request->company_name,
+                'address' => $request->address,
+                'address2' => $request->address2,
+                'town' => $request->town,
+                'state' => $request->state,
+                'zip' => $request->zip,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'create_account' => $request->create_account ? '1' : '0',
+                'ship_to_address' => $request->ship_to_address ? '1' : '0',
+                'order_note' =>  $request->order_note ? $request->order_note : '',
+                'cal_shipping' => $request->cal_shipping,
+                'payment_method' => $request->payment_method,
+                'last_confirm' => $request->last_confirm ? '1' : '0'
             ]);
             $response = array("success" => true, "message" => "Create order successfully!");
-        } catch(Exception $e) {
+        } catch(\Throwable $e) {
             $response = array("success" => false, "message" => $e->getMessage());
         }
         return $response;
