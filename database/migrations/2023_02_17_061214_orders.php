@@ -26,9 +26,9 @@ return new class extends Migration
             $table->string('zip');
             $table->string('phone');
             $table->string('email');
+            $table->string('order_note');
             $table->tinyInteger('create_account');
             $table->tinyInteger('ship_to_address');
-            $table->tinyInteger('order_note');
             $table->tinyInteger('cal_shipping');
             $table->tinyInteger('payment_method');
             $table->tinyInteger('last_confirm');
