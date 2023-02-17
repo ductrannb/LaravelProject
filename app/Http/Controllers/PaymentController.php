@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\Payme\ApiService;
-use App\Models\Payment;
+use App\Models\Order;
 
 class PaymentController extends Controller
 {
@@ -49,7 +49,7 @@ class PaymentController extends Controller
     public function create()
     {
         try {
-            $x = Payment::create([
+            $x = Order::create([
                 'first_name' => $_POST['first_name'],
                 'last_name' => $_POST['last_name'],
                 'company_name' => $_POST['company_name'],

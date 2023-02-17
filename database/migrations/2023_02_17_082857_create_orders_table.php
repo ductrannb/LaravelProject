@@ -32,6 +32,8 @@ return new class extends Migration
             $table->tinyInteger('cal_shipping');
             $table->tinyInteger('payment_method');
             $table->tinyInteger('last_confirm');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
