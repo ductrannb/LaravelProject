@@ -74,10 +74,13 @@ class PaymentController extends Controller
                 'payment_method' => $request->payment_method,
                 'last_confirm' => $request->last_confirm ? '1' : '0'
             ]);
-            $response = array("success" => true, "message" => "Create order successfully!");
+            $response = $this->response(true, "Create order successfully!");
+            $mail = new OrderMailController();
+            $mail->sendMail($x);
         } catch(Exception $e) {
-            $response = array("success" => false, "message" => $e->getMessage());
+            $response = $this->response(false, $e->getMessage());
         }
+        return $response;
     }
 
     public function delete(Request $request)
@@ -100,13 +103,9 @@ class PaymentController extends Controller
         }
     }
 
-    public function getOrderById($id)
+    public static function getOrderById($id)
     {
-        try {
-
-        } catch (\Throwable $e){
-
-        }
+        return Order::Find($id);
     }
 
     public function getOrders()

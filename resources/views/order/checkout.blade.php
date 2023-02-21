@@ -20,18 +20,9 @@
     <script src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js'></script>
     <script src='http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js' type='text/javascript'></script>
     <style>
-        .form-control {
-            /* margin-top: 10px; */
-            margin-bottom: 10px;
-        }
-
         .container {
             margin-top: 50px;
             margin-bottom: 50px;
-        }
-
-        .oder-table {
-            width: 100%;
         }
 
         td {
@@ -42,6 +33,24 @@
             padding: 20px 0;
         }
 
+        .alert {
+            position: fixed;
+            display: none;
+        }
+
+        .alert-primary {
+            background-color: green;
+            color: white;
+        }
+        .oder-table {
+            width: 100%;
+        }
+
+        .form-control {
+            /* margin-top: 10px; */
+            margin-bottom: 10px;
+        }
+        
         .form-check {
             margin-bottom: 8px;
         }
@@ -59,16 +68,6 @@
 
         .item-border {
             border-top: 1px solid #eee;
-        }
-
-        .alert {
-            position: fixed;
-            display: none;
-        }
-
-        .alert-primary {
-            background-color: green;
-            color: white;
         }
     </style>
 </head>
