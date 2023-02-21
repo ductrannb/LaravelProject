@@ -75,7 +75,7 @@ class PaymentController extends Controller
                 'last_confirm' => $request->last_confirm ? '1' : '0'
             ]);
             $response = array("success" => true, "message" => "Create order successfully!");
-        } catch(\Throwable $e) {
+        } catch(Exception $e) {
             $response = array("success" => false, "message" => $e->getMessage());
         }
     }
