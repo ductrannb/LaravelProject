@@ -27,17 +27,22 @@ Route::get('/', function () {
 // });
 
 Auth::routes();
-
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-Route::get('/pay', [PaymentController::class, 'index'])->name('pay');
-
 Route::get('/html_dom', function () {
     print file_get_html('http://www.google.com/')->plaintext;
 })->name('html_dom');
 
-Route::get('/checkout', function () {
-    return view('checkout');
-})->name('checkout');
+Route::controller(PaymentController::class)->group(function () {
+    Route::get('/pay', 'index')->name('pay');
+    Route::post('/checkout', 'create');
+    Route::delete('/delete_order', 'delete')->name('delete')->middleware('auth');
+});
 
-Route::post('/checkout', [PaymentController::class, 'create']);
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', function () {
+        return view('order.checkout');
+    })->name('checkout');
+    Route::get('/orders', function () {
+        return view('order.orders');
+    });
+});
