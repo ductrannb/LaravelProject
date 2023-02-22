@@ -26,12 +26,12 @@ return new class extends Migration
             $table->string('zip');
             $table->string('phone');
             $table->string('email');
-            $table->string('order_note');
-            $table->tinyInteger('create_account');
-            $table->tinyInteger('ship_to_address');
-            $table->tinyInteger('cal_shipping');
-            $table->tinyInteger('payment_method');
-            $table->tinyInteger('last_confirm');
+            $table->string('order_note')->nullable();
+            $table->tinyInteger('create_account')->default('0');
+            $table->tinyInteger('ship_to_address')->default('0');
+            $table->tinyInteger('cal_shipping')->default('0');
+            $table->tinyInteger('payment_method')->default('0');
+            $table->tinyInteger('last_confirm')->default('0');
             $table->timestamps();
             $table->softDeletes();
         });

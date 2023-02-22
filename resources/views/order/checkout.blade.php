@@ -94,7 +94,7 @@
             $('#form').validate({
                 rules: {
                     "first_name": {
-                        required: true
+                        required: true,
                     },
                     "last_name": {
                         required: true

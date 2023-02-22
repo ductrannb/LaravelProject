@@ -5,14 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\Payme\ApiService;
 use App\Models\Order;
+use App\Services\OrderService;
 
 class PaymentController extends Controller
 {
 
-    public function response(bool $success, string $message)
+    public $orderService;
+
+    public function __construct(OrderService $orderService)
     {
-        return array('success' => $success, 'message' => $message);
+        $this->orderService = $orderService;
     }
+    
+    
 
     public function index()
     {
@@ -54,62 +59,30 @@ class PaymentController extends Controller
 
     public function create(Request $request)
     {
-        try {
-            $x = Order::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'company_name' => $request->company_name,
-                'country' => $request->company_name,
-                'address' => $request->address,
-                'address2' => $request->address2,
-                'town' => $request->town,
-                'state' => $request->state,
-                'zip' => $request->zip,
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'create_account' => $request->create_account ? '1' : '0',
-                'ship_to_address' => $request->ship_to_address ? '1' : '0',
-                'order_note' =>  $request->order_note ? $request->order_note : '',
-                'cal_shipping' => $request->cal_shipping,
-                'payment_method' => $request->payment_method,
-                'last_confirm' => $request->last_confirm ? '1' : '0'
-            ]);
-            $response = $this->response(true, "Create order successfully!");
-            $mail = new OrderMailController();
-            $mail->sendMail($x);
-        } catch(Exception $e) {
-            $response = $this->response(false, $e->getMessage());
-        }
+        // dd($request);
+        $response = $this->orderService->create($request->all());
         return $response;
     }
 
     public function delete(Request $request)
     {
-        try {
-            $order = Order::find($request->id);
-            $order->delete();
-        } catch (\Throwable $e) {
-            return $this->response(false, $e->getMessage());
-        }
-        return $this->response(true, 'Delete order successfully!');
+        $response = $this->orderService->delete($request->id);
+        return $response;
     }
 
-    public function update(Request $request)
-    {
-        try {
-
-        } catch (\Throwable $e){
-
-        }
-    }
+    // public function update(Request $request)
+    // {
+    //     $response = $orderService->update($request->all());
+    //     return $response;
+    // }
 
     public static function getOrderById($id)
     {
-        return Order::Find($id);
+        return self::orderService->get($id);
     }
 
     public function getOrders()
     {
-        return Order::All();
+        return $this->orderService->getAll();
     }
 }
