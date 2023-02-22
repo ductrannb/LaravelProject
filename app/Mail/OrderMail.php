@@ -34,7 +34,7 @@ class OrderMail extends Mailable
     {
         return new Envelope(
             from:new Address('kiaisoft.duc.tran.laravel@gmail.com', 'Đức KiaiSoft'),
-            subject:'Order Mail',
+            subject:'Order Mail - by Duc.Tran',
         );
     }
 
