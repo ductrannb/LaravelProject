@@ -39,9 +39,7 @@ Route::controller(PaymentController::class)->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/checkout', function () {
-        return view('order.checkout');
-    })->name('checkout');
+    Route::get('/checkout', [PaymentController::class, 'index'])->name('checkout');
     Route::get('/orders', function () {
         return view('order.orders');
     });

@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Order extends Model
+class OrderDetail extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    public function details()
+    protected $guarded = [];
+    
+    public function product()
     {
-        return $this->hasMany(OrderDetail::class);
+        return $this->hasOne(Product::class);
     }
 
-    // protected $table = 'orders';
-    public $timestamps = true;
-    protected $guarded = [];
+    protected $table = 'order_details';
 }

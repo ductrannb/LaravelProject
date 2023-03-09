@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email');
             $table->string('order_note')->nullable();
+            $table->unsignedInteger('total_money');
             $table->tinyInteger('create_account')->default('0');
             $table->tinyInteger('ship_to_address')->default('0');
             $table->tinyInteger('cal_shipping')->default('0');

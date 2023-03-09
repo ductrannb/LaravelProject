@@ -19,23 +19,9 @@ class OrderService
         $this->responseService = new ResponseService();
     }
 
-    // public function __construct(OrderRepository $orderRepo)
-    // {
-    //     $this->orderRepo = $orderRepo;
-    // }
-
     public function create($data)
     {
-        try {
-            $x = $this->orderRepo->create($data);
-            // dd($x);
-            $response = $this->responseService->response(true, "Create order successfully!");
-            $mail = new OrderMailController();
-            $mail->sendMail($x);
-        } catch(Exception $e) {
-            $response = $this->responseService->response(false, $e->getMessage());
-        }
-        return $response;
+        return $this->orderRepo->create($data);
     }
 
     public function delete($id)
