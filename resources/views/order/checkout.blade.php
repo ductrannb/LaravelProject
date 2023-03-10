@@ -303,17 +303,17 @@
                 dataType: 'json',
                 method: 'POST',
                 success: function(res) {
-                    showMessage(res.success, res.message)
+                    showMessage(res.status, res.message)
                 },
                 error: function(res) {
-                    showMessage(res.success, res.message)
+                    showMessage(res.status, res.message)
                 }
             })
         }
 
-        function showMessage(success, message) {
+        function showMessage(status, message) {
             var alert = document.getElementById('alert')
-            if (success) {
+            if (status == 'success') {
                 alert.classList.add('alert-primary')
             } else {
                 alert.classList.add('alert-danger')

@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\Payme\ApiService;
-use App\Models\Order;
 use App\Services\OrderService;
 use App\Services\ProductService;
 
 class PaymentController extends Controller
 {
 
-    private $order_service;
-    private $product_service;
-    private $order_detail_ctl;
+    private OrderService $order_service;
+    private ProductService $product_service;
+    private OrderDetailController $order_detail_ctl;
 
     public function __construct(OrderService $order_service, ProductService $product_service, OrderDetailController $order_detail_ctl)
     {
@@ -38,16 +36,21 @@ class PaymentController extends Controller
 
     public function create(Request $request)
     {
-        $order = $this->order_service->create($request->except('product_ids', 'product_quantities'));
-        // dd($order);
-        $product_ids = $request->product_ids;
-        $product_quantities = $request->product_quantities;
-        // dd($product_quantities);
-        foreach ($product_ids as $product_id) {
-            $data = array('order_id'=>$order->id, 'product_id'=>$product_id, 'quantity'=>$product_quantities[$product_id]);
-            $this->order_detail_ctl->create($data);
+        try {
+            $order = $this->order_service->create($request->except('product_ids', 'product_quantities'));
+            // dd($order);
+            $product_ids = $request->product_ids;
+            $product_quantities = $request->product_quantities;
+            // dd($product_quantities);
+            foreach ($product_ids as $product_id) {
+                $data = array('order_id'=>$order->id, 'product_id'=>$product_id, 'quantity'=>$product_quantities[$product_id]);
+                $this->order_detail_ctl->create($data);
+            }
+            return response()->json(['status'=>'success', 'message'=>'create order successfully !']);
         }
-        return $order;
+        catch (\Throwable $throw) {
+            return response()->json(['status'=>'error', 'message'=>$throw->getMessage()]);
+        }
     }
 
     public function delete(Request $request)
@@ -62,9 +65,9 @@ class PaymentController extends Controller
     //     return $response;
     // }
 
-    public static function getOrderById($id)
+    public function getOrderById($id)
     {
-        return self::order_service->get($id);
+        return $this->order_service->get($id);
     }
 
     public function getOrders()
