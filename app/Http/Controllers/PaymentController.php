@@ -37,15 +37,7 @@ class PaymentController extends Controller
     public function create(Request $request)
     {
         try {
-            $order = $this->order_service->create($request->except('product_ids', 'product_quantities'));
-            // dd($order);
-            $product_ids = $request->product_ids;
-            $product_quantities = $request->product_quantities;
-            // dd($product_quantities);
-            foreach ($product_ids as $product_id) {
-                $data = array('order_id'=>$order->id, 'product_id'=>$product_id, 'quantity'=>$product_quantities[$product_id]);
-                $this->order_detail_ctl->create($data);
-            }
+            $order = $this->order_service->create($request->all());
             return response()->json(['status'=>'success', 'message'=>'create order successfully !']);
         }
         catch (\Throwable $throw) {
