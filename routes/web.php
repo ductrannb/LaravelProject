@@ -34,7 +34,6 @@ Route::get('/html_dom', function () {
 })->name('html_dom');
 
 Route::controller(PaymentController::class)->group(function () {
-    Route::get('/pay', 'index')->name('pay');
     Route::post('/checkout', 'create');
     Route::delete('/delete_order', 'delete')->name('delete')->middleware('auth');
 });
@@ -44,5 +43,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', function () {
         return view('order.orders');
     });
-
+    Route::get('payment', [PaymentController::class, 'showPaymentUI'])->name('payment.ui');
 });

@@ -12,7 +12,7 @@ class OrderDetail extends Model
     use SoftDeletes;
 
     protected $guarded = [];
-    
+
     public function product()
     {
         return $this->hasOne(Product::class);

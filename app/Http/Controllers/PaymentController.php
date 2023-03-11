@@ -34,11 +34,20 @@ class PaymentController extends Controller
         return view('order.checkout')->with(['products'=>$products, 'total_money'=>$total_money]);
     }
 
+    public function showPaymentUI()
+    {
+        // view payment
+    }
+
     public function create(Request $request)
     {
         try {
+            $create_account = $request->boolean('create_account') ? 1 : 0;
+            $ship_to_address = $request->boolean('ship_to_address') ? 1 : 0;
+            $last_confirm = $request->boolean('last_confirm') ? 1 : 0;
+            $request->merge(array('create_account'=>$create_account, 'ship_to_address'=>$ship_to_address, 'last_confirm'=>$last_confirm));
             $order = $this->order_service->create($request->all());
-            return response()->json(['status'=>'success', 'message'=>'create order successfully !']);
+            return response()->json(['code'=>$order->id, 'url'=>route('payment.ui', ['code'=>$order->id]), 'total_money'=>$order->total_money]);
         }
         catch (\Throwable $throw) {
             return response()->json(['status'=>'error', 'message'=>$throw->getMessage()]);
