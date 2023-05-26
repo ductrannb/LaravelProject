@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\OrderService;
 use App\Services\ProductService;
+use App\Http\Requests\StoreOrderRequest;
+use App\Notifications\OrderNoti;
 
 class PaymentController extends Controller
 {
@@ -34,11 +38,23 @@ class PaymentController extends Controller
         return view('order.checkout')->with(['products'=>$products, 'total_money'=>$total_money]);
     }
 
-    public function create(Request $request)
+    public function showPaymentUI()
+    {
+        $order = Order::findOrfail(request('code'));
+        return view('order.payment', compact('order'));
+    }
+
+    public function create(StoreOrderRequest $request)
     {
         try {
+            $create_account = $request->boolean('create_account') ? 1 : 0;
+            $ship_to_address = $request->boolean('ship_to_address') ? 1 : 0;
+            $last_confirm = $request->boolean('last_confirm') ? 1 : 0;
+            $request->merge(array('create_account'=>$create_account, 'ship_to_address'=>$ship_to_address, 'last_confirm'=>$last_confirm));
             $order = $this->order_service->create($request->all());
-            return response()->json(['status'=>'success', 'message'=>'create order successfully !']);
+            //Gui email, notifications
+            auth()->user()->notify(new OrderNoti ($order));
+            return response()->json($this->order_service->getPaymentLink());
         }
         catch (\Throwable $throw) {
             return response()->json(['status'=>'error', 'message'=>$throw->getMessage()]);

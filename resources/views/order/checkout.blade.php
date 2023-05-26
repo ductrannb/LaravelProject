@@ -33,15 +33,6 @@
             padding: 20px 0;
         }
 
-        .alert {
-            position: fixed;
-            display: none;
-        }
-
-        .alert-primary {
-            background-color: green;
-            color: white;
-        }
         .oder-table {
             width: 100%;
         }
@@ -50,7 +41,7 @@
             /* margin-top: 10px; */
             margin-bottom: 10px;
         }
-        
+
         .form-check {
             margin-bottom: 8px;
         }
@@ -74,7 +65,22 @@
 
 <body>
     <div class='container'>
-        <div class="alert" id='alert' role="alert">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="title"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <a href="#" id="info">Click to payment</a>
+                        <p id="total_money"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <form id='form' name='form'>
             @csrf
@@ -91,10 +97,10 @@
                             <input type='text' class='form-control' id='lastNameInput' name='last_name'>
                         </div>
                     </div>
-        
+
                     <label for='companyInput' class='form-label'>Company Name (Optional)</label>
                     <input type='text' class='form-control' id='companyInput' name='company_name'>
-        
+
                     <label for='countrySelect' class='form-label'>Country / Region *</label>
                     <select class='form-select form-control' aria-label='Default select example' id='countrySelect' name='country'>
                         <option selected value='us'>United States (US)</option>
@@ -102,13 +108,13 @@
                         <option value='fr'>France</option>
                         <option value='aus'>Austria</option>
                     </select>
-        
+
                     <label for='streetInput' class='form-label'>Street Address *</label>
                     <input type='text' class='form-control' id='streetInput' placeholder='House number and street name' name='address'>
-        
+
                     <input type='text' class='form-control' name='address2'
                         placeholder='Apartment, suite, unit, etc. (optional)'>
-        
+
                     <div class='row'>
                         <div class='col-lg-6'>
                             <label for='townInput' class='form-label'>Town / City *</label>
@@ -119,7 +125,7 @@
                             <input type='text' class='form-control' id='stateInput' name='state'>
                         </div>
                     </div>
-        
+
                     <div class='row'>
                         <div class='col-lg-6'>
                             <label for='zipInput' class='form-label'>Zip *</label>
@@ -130,27 +136,27 @@
                             <input type='text' class='form-control' id='phoneInput' name='phone'>
                         </div>
                     </div>
-        
+
                     <label for='emaillInput' class='form-label'>Email Address *</label>
                     <input type='text' class='form-control' id='emaillInput' name='email'>
-        
+
                     <div>
                         <input type='checkbox' class='form-check-input' id='createAccountCheckbox' name='create_account'>
                         <label class='form-check-label' for='createAccountCheckbox'>Create an account?</label>
                     </div>
-        
+
                     <div>
                         <input type='checkbox' class='form-check-input' id='shipToAddCheckbox' name='ship_to_address'>
                         <label class='form-check-label' for='shipToAddCheckbox'>Ship to a different address?</label>
                     </div>
-        
+
                     <h3 class='text-uppercase'>Additional Information</h3>
                     <label for='zipInput' class='form-label'>Order Notes (Optional)</label>
                     <textarea class='form-control pb-2 pt-2 mb-0' cols='30' rows='5'
                         placeholder='Notes about your order, e.g. special notes for delivery'
                         style='width: 700px; height: 125px;' name='order_note'></textarea>
                 </div>
-                
+
                 <div class='col-lg-5'>
                     <div style='padding: 25px 30px 30px; border: 1px solid #eee;'>
                         <h3 style='padding-bottom: 22px; margin-bottom: 19px; border-bottom: 1px #eee solid;'>Your Order
@@ -189,25 +195,25 @@
                                         {{'$' . $total_money}}
                                     </td>
                                 </tr>
-        
+
                                 <tr class='item-border'>
                                     <td>
                                         <h4 class='title'>Calculate Shipping</h4>
                                         <div class='form-check'>
-                                            <input class='form-check-input' type='radio' name='cal_shipping'
+                                            <input class='form-check-input' checked type='radio' name='cal_shipping'
                                                 id='flatRateBtn' value='0'>
                                             <label class='form-check-label' for='flatRateBtn'>Flat rate</label>
                                         </div>
                                         <div class='form-check'>
                                             <input class='form-check-input' type='radio' name='cal_shipping'
-                                                id='freeShipBtn' checked value='1'>
+                                                id='freeShipBtn' value='1'>
                                             <label class='form-check-label' for='freeShipBtn'>
                                                 Free shipping
                                             </label>
                                         </div>
                                         <div class='form-check'>
                                             <input class='form-check-input' type='radio' name='cal_shipping'
-                                                id='localPickupBtn' checked value='2'>
+                                                id='localPickupBtn'  value='2'>
                                             <label class='form-check-label' for='localPickupBtn'>
                                                 Local pickup
                                             </label>
@@ -303,27 +309,35 @@
                 dataType: 'json',
                 method: 'POST',
                 success: function(res) {
-                    showMessage(res.status, res.message)
-                },
-                error: function(res) {
-                    showMessage(res.status, res.message)
+                    showModal(res.code, res.url, res.total_money)
                 }
             })
         }
 
-        function showMessage(status, message) {
-            var alert = document.getElementById('alert')
-            if (status == 'success') {
-                alert.classList.add('alert-primary')
-            } else {
-                alert.classList.add('alert-danger')
-            }
-            alert.innerHTML = message
-            alert.style.display = "block"
-            setTimeout(function() {
-                $('#alert').fadeOut('fast');
-            }, 2000);
+        function showModal(code, url, money) {
+            var title = document.getElementById('title')
+            var info = document.getElementById('info')
+            var total_money = document.getElementById('total_money')
+            title.innerHTML = "Payment for order code: " + code
+            total_money.innerHTML = "Total money: " + money
+            info.href = url
+            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+                keyboard: false
+            });
+            myModal.show();
         }
+
+        // var modal = document.getElementById('modal')
+        // var closeButton = document.getElementsByClassName("close")[0];
+        // closeButton.onclick = function() {
+        //     modal.style.display = "none";
+        // }
+        //
+        // window.onclick = function(event) {
+        //     if (event.target == modal) {
+        //         modal.style.display = "none";
+        //     }
+        // }
     </script>
 
 </body>
