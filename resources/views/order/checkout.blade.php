@@ -200,20 +200,20 @@
                                     <td>
                                         <h4 class='title'>Calculate Shipping</h4>
                                         <div class='form-check'>
-                                            <input class='form-check-input' type='radio' name='cal_shipping'
+                                            <input class='form-check-input' checked type='radio' name='cal_shipping'
                                                 id='flatRateBtn' value='0'>
                                             <label class='form-check-label' for='flatRateBtn'>Flat rate</label>
                                         </div>
                                         <div class='form-check'>
                                             <input class='form-check-input' type='radio' name='cal_shipping'
-                                                id='freeShipBtn' checked value='1'>
+                                                id='freeShipBtn' value='1'>
                                             <label class='form-check-label' for='freeShipBtn'>
                                                 Free shipping
                                             </label>
                                         </div>
                                         <div class='form-check'>
                                             <input class='form-check-input' type='radio' name='cal_shipping'
-                                                id='localPickupBtn' checked value='2'>
+                                                id='localPickupBtn'  value='2'>
                                             <label class='form-check-label' for='localPickupBtn'>
                                                 Local pickup
                                             </label>

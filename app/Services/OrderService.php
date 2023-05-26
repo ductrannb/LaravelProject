@@ -19,6 +19,8 @@ class OrderService
     const SHIPPING_FLAT_RATE = 0;
     const SHIPPING_FREE_SHIPPING = 1;
     const SHIPPING_LOCAL_PICKUP = 2;
+    const PAYMENT_METHOD_CHECK_PAYMENTS = 0;
+    const PAYMENT_METHOD_COD = 1;
 
     public function __construct()
     {
@@ -31,7 +33,7 @@ class OrderService
         if ($this->total_money > 2000) {
             $this->calShipping = self::SHIPPING_FREE_SHIPPING;
         } else {
-            $this->shippingFee = min(30, $this->total_money * .2);
+            $this->shippingFee = min(30, $this->total_money * .02);
         }
     }
     public function create($data)
@@ -53,7 +55,17 @@ class OrderService
             $this->total_money += $this->shippingFee;
         }
         $this->orderInstance->update(['total_money'=>$this->total_money]);
+        if ($data['payment_method'] == self::PAYMENT_METHOD_CHECK_PAYMENTS) {
+
+        } else {
+
+        }
         return $this->orderInstance;
+    }
+
+    public function getPaymentLink()
+    {
+        return ['code'=>$this->orderInstance->id, 'url'=>route('payment.ui', ['code'=>$this->orderInstance->id]), 'total_money'=>$this->orderInstance->total_money];
     }
 
     public function delete($id)
