@@ -30,9 +30,20 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/html_dom', function () {
-    print file_get_html('http://www.google.com/')->plaintext;
-})->name('html_dom');
+Route::get('/get-phone', function () {
+    $html = file_get_html('https://ladorax.com/diem-ban/');
+        foreach ($html->find('a') as $element) {
+            if (strpos($element->href, "dia_diem")) {
+                $index = 1;
+                foreach (file_get_html($element->href)->find('td') as $sub_element) {
+                    if ($sub_element->innertext && $index % 5 == 0) {
+                        echo ($sub_element->innertext . "<br>");
+                    }
+                    $index++;
+                }
+            }
+        }
+})->name('get-phone');
 Route::controller(PaymentController::class)->group(function () {
     Route::post('/checkout', 'create');
     Route::delete('/delete_order', 'delete')->name('delete')->middleware('auth');
